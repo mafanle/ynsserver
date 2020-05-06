@@ -12,5 +12,8 @@ app.use(cors({
 app.use(bodyPaser.urlencoded({
     extended:false
 }))
+app.get('/hello',function (req,res) {
+     res.send('fuck') 
+})
 //4000端口
 app.listen(4000);
