@@ -13,7 +13,12 @@ app.use(bodyPaser.urlencoded({
     extended:false
 }))
 app.get('/hello',function (req,res) {
-     res.send('fuck') 
+     res.send({"code":1}) 
+})
+app.post('/reg',function (req,res) {
+      console.log(req.body);
+      res.send({"code":1})
+    
 })
 //4000端口
 app.listen(4000);
