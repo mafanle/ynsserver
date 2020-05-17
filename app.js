@@ -1,9 +1,11 @@
 //引入需要的模块
 const express = require('express')
 const bodyPaser = require('body-parser')
+const pool = require('./pool')
 const cors = require('cors')
 const app = express()
 
+const routeruser = require('./routers/index')
 //设置cor跨域
 app.use(cors({
     origin:'http://localhost:8080'
@@ -12,13 +14,11 @@ app.use(cors({
 app.use(bodyPaser.urlencoded({
     extended:false
 }))
-app.get('/hello',function (req,res) {
-     res.send({"code":1}) 
-})
-app.post('/reg',function (req,res) {
-      console.log(req.body);
-      res.send({"code":1})
-    
+ app.use(routeruser)
+
+app.get('/search',function (req,res) {
+    console.log(req.query);
+    res.send({"code":1})
 })
 //4000端口
 app.listen(4000);
