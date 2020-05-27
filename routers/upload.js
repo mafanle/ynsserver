@@ -27,32 +27,31 @@ var upload = multer({
 
 router.post('/upload', upload.single('file'), (req, res) => {
     console.log(req.query.id);
-    var yid  = req.query.id
-    var sql =  'select userimg from yns_user where yid = ?'
-      pool.query(sql,[yid],(err,result)=>{
-          console.log(result);
-          var path = result[0].userimg
-          console.log(path);
-           path = 'upload/'+path.substr(path.lastIndexOf('/') + 1);
-           fs.unlink(path,function (error) {
+    var yid = req.query.id
+    var sql = 'select userimg from yns_user where yid = ?'
+    pool.query(sql, [yid], (err, result) => {
+        var path = result[0].userimg
+        path = 'upload/' + path.substr(path.lastIndexOf('/') + 1);
+        if (path != 'images/shiyan3.png') {
+            fs.unlink(path, function (error) {
                 if (error) {
                     console.log(error);
                     return
                 }
-                console.log('删除成功');
             })
-      })
+        }
+    })
     var file = 'http://127.0.0.1:4000/' + req.file.path.substr(req.file.path.lastIndexOf('\\') + 1);
     var sql = 'UPDATE yns_user SET userimg=? WHERE yid=? '
     pool.query(sql, [file, yid], (err, result) => {
         if (err) throw err
         if (result.affectedRows > 0) {
-           var sql = 'select userimg from yns_user where yid = ?'
-           pool.query(sql,[yid],(err,result)=>{
-               if (err) throw err
+            var sql = 'select userimg from yns_user where yid = ?'
+            pool.query(sql, [yid], (err, result) => {
+                if (err) throw err
                 console.log(result);
                 res.send(result)
-           })
+            })
         } else {
             res.send('0')
         }
